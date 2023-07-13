@@ -26,11 +26,12 @@ class Paginate {
     async send() {
         const embeds = [];
         if (this.numbering) {
-            this.list = this.list.map((item, i) => `${i + 1}. ${item}`);
+            // eslint-disable-next-line no-irregular-whitespace
+            this.list = this.list.map((item, i) => `${i + 1}.  ${item}`);
         }
         const chunks = this.chunk(this.list, this.elements);
         chunks.forEach((chunk) => {
-            var _a, _b;
+            var _a;
             const new_embed = new discord_js_1.EmbedBuilder().setTitle(this.embed.data.title || "Embed");
             let description = chunk.join("\n");
             if (this.embed.data.description) {
@@ -38,10 +39,6 @@ class Paginate {
             }
             if ((_a = this.embed.data.footer) === null || _a === void 0 ? void 0 : _a.text)
                 new_embed.setFooter({ text: this.embed.data.footer.text });
-            if (((_b = this.embed.data.footer) === null || _b === void 0 ? void 0 : _b.text) && chunks.length >= 2) {
-                // no footer text if there's only one page
-                description += "\n\n" + this.embed.data.footer.text;
-            }
             new_embed.setDescription(description);
             embeds.push(new_embed);
         });

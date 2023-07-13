@@ -185,7 +185,8 @@ module.exports = {
                 parseInt(elem.userplaycount) >= min_plays_for_crown
                 ? ":crown:"
                 : index + "."}`;
-            return `${indicator} ${elem.discord_username} — **${elem.userplaycount} play(s)** ${diff_str}`;
+            // eslint-disable-next-line no-irregular-whitespace
+            return `${indicator}  ${elem.discord_username} — **${elem.userplaycount} play(s)** ${diff_str}`;
         });
         // delete if there's an existing crown for the artist in the server
         await db.delete_crown(top_user.artist_name, top_user.guild_id);

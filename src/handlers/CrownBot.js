@@ -22,7 +22,6 @@ class CrownBot {
         this.client_id = options.client_id;
         this.owner_ID = options.owner_ID;
         this.api_key = options.api_key;
-        this.access_token = options.access_token;
         this.mongo = options.mongo;
         this.url = options.url;
     }

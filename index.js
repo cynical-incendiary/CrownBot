@@ -12,14 +12,12 @@ const handle_modal_1 = require("./src/handlers/handle_modal");
 /*
 # REQUIRED
 ======================================================================================================
-TOKEN: Discord API token
+DISCORD_CLIENTID: Bot's client ID
+DISCORD_TOKEN: Discord API token
 OWNER_ID: User ID of the bot owner
-API_KEY: Last.fm API key
+LASTFM_API_KEY: Last.fm API key
 MONGO: Mongo DB connection string
 ======================================================================================================
-
-# OPTIONAL
-ACCESS_TOKEN: Deezer access token—used to be used in the topalbums command; no longer required.
 
 
 LYRICS_ENDPOINT: Lyrics endpoint for the /lyrics command--command won't work unless this is set.
@@ -35,19 +33,18 @@ SPOTIFY_SECRETID: Spotify client ID for the /chart command to show artist images
 (async () => {
     var _a;
     try {
-        const { CLIENT_ID, TOKEN, OWNER_ID, API_KEY, ACCESS_TOKEN, MONGO } = process.env;
-        if (!(TOKEN && OWNER_ID && API_KEY && MONGO && CLIENT_ID && ACCESS_TOKEN)) {
+        const { DISCORD_CLIENTID, DISCORD_TOKEN, OWNER_ID, LASTFM_API_KEY, MONGO } = process.env;
+        if (!(DISCORD_TOKEN && OWNER_ID && LASTFM_API_KEY && MONGO && DISCORD_CLIENTID)) {
             throw "Some of the environment variables are missing.";
         }
         const bot = await new CrownBot_1.default({
             version: GLOBALS_1.default.VERSION,
             buttons_version: GLOBALS_1.default.BUTTONS_VERSION,
             max_users: GLOBALS_1.default.MAX_USERS,
-            client_id: CLIENT_ID,
-            token: TOKEN,
+            client_id: DISCORD_CLIENTID,
+            token: DISCORD_TOKEN,
             owner_ID: OWNER_ID,
-            api_key: API_KEY,
-            access_token: ACCESS_TOKEN,
+            api_key: LASTFM_API_KEY,
             mongo: MONGO,
             url: GLOBALS_1.default.LASTFM_ENDPOINT,
         }).init();
@@ -98,7 +95,7 @@ SPOTIFY_SECRETID: Spotify client ID for the /chart command to show artist images
                 console.error(e);
             }
         });
-        await client.login(TOKEN);
+        await client.login(DISCORD_TOKEN);
         console.log(`Logged in as ${(_a = client.user) === null || _a === void 0 ? void 0 : _a.tag}`);
     }
     catch (e) {
