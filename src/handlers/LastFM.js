@@ -5,7 +5,7 @@ exports.LastFM = void 0;
 const tslib_1 = require("tslib");
 const axios_1 = tslib_1.__importDefault(require("axios"));
 const querystring_1 = require("querystring");
-const { API_KEY } = process.env;
+const { LASTFM_API_KEY } = process.env;
 // custom overrides for vague or unfitting Last.fm error messages
 const error_overrides = [
     {
@@ -18,7 +18,7 @@ class LastFM {
     constructor() {
         this.timeout = { timeout: 30 * 1000 };
         this.format = "json";
-        _LastFM_apikey.set(this, API_KEY);
+        _LastFM_apikey.set(this, LASTFM_API_KEY);
         this.url = "https://ws.audioscrobbler.com/2.0/?";
     }
     /**
