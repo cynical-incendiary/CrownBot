@@ -156,7 +156,7 @@ module.exports = {
             cached_noalbumcover = await (0, canvas_1.loadImage)(no_album_cover);
         }
         catch (_a) {
-            cached_noalbumcover = "";
+            cached_noalbumcover = "SKIP";
         }
         const promises = data.map(async (elem) => {
             if (elem.image_url) {
@@ -181,7 +181,8 @@ module.exports = {
             if (loaded_images[iter]) {
                 for (let xAxis = 0; xAxis < x * 100; xAxis += 100) {
                     if (loaded_images[iter]) {
-                        ctx.drawImage(loaded_images[iter], xAxis, yAxis, 100, 100);
+                        if (loaded_images[iter] !== "SKIP")
+                            ctx.drawImage(loaded_images[iter], xAxis, yAxis, 100, 100);
                         iter++;
                     }
                     else
