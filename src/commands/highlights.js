@@ -70,7 +70,7 @@ module.exports = {
                 .then((data) => add_to_datapoints(data)));
         }
         await Promise.all(promises);
-        const file_path = path_1.default.resolve(__dirname, "../../../html/highlights.html");
+        const file_path = path_1.default.resolve(__dirname, "../../html/highlights.html");
         const template_html = await fs_1.promises.readFile(file_path);
         const data_code = `
     const LASTFM_USERNAME="${lastfm_user.username}";
