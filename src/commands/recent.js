@@ -51,7 +51,7 @@ module.exports = {
                 time_str = "Playing";
             }
             else {
-                const timestamp = moment_1.default.unix(track.date.uts).valueOf();
+                const timestamp = moment_1.default.unix(parseInt(track.date.uts)).valueOf();
                 time_str = (0, time_difference_1.default)(timestamp) + " ago";
             }
             embed.addFields({

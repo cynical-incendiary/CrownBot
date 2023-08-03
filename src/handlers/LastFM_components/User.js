@@ -43,12 +43,14 @@ class default_1 extends LastFM_1.LastFM {
         }
         return query;
     }
-    async get_recenttracks() {
+    async get_recenttracks(custom) {
         var _a, _b, _c;
+        const custom_options = { ...(custom || {}) };
         const query = await this.query({
             method: "user.getRecentTracks",
             user: this.username,
             ...this.configs,
+            ...custom_options,
         });
         if (query.success) {
             // only check the following conditions if query is a success.
@@ -149,7 +151,7 @@ class default_1 extends LastFM_1.LastFM {
             // consider the track scrobbled in the last 3 minutes as 'now-playing'
             let is_scrobbled_recently = false;
             if (last_track.date) {
-                const diff = (0, moment_1.default)().diff(moment_1.default.unix(last_track.date.uts), "minutes");
+                const diff = (0, moment_1.default)().diff(moment_1.default.unix(parseInt(last_track.date.uts)), "minutes");
                 is_scrobbled_recently = diff <= 3;
             }
             if (has_now_playing_tag || is_scrobbled_recently)
@@ -206,7 +208,7 @@ class default_1 extends LastFM_1.LastFM {
             // consider the track scrobbled in the last 3 minutes as 'now-playing'
             let is_scrobbled_recently = false;
             if (last_track.date) {
-                const diff = (0, moment_1.default)().diff(moment_1.default.unix(last_track.date.uts), "minutes");
+                const diff = (0, moment_1.default)().diff(moment_1.default.unix(parseInt(last_track.date.uts)), "minutes");
                 is_scrobbled_recently = diff <= 3;
             }
             if (has_now_playing_tag || is_scrobbled_recently)
@@ -395,6 +397,22 @@ class default_1 extends LastFM_1.LastFM {
         });
         return stats;
     }
+    async get_alltime_listening_history() {
+        try {
+            const response = await axios_1.default.get(`https://www.last.fm/user/${encodeURIComponent(this.username)}/library`, this.timeout).catch(() => {
+                return undefined;
+            });
+            if ((response === null || response === void 0 ? void 0 : response.status) !== 200) {
+                return undefined;
+            }
+            const stat = this.parse_listening_history(response.data);
+            return stat;
+        }
+        catch (_) {
+            return undefined;
+        }
+    }
+    // doesn't work anymore
     async get_listening_history(date_preset, artist_name, from) {
         let artist_specific = "";
         let url_param = `date_preset=${date_preset || "LAST_7_DAYS"}`;

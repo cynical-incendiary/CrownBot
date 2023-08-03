@@ -41,7 +41,7 @@ module.exports = {
             }
             let status_text = "🎵 playing now on Last.Fm";
             if (!((_a = now_playing["@attr"]) === null || _a === void 0 ? void 0 : _a.nowplaying) && now_playing.date) {
-                const timestamp = moment_1.default.unix(now_playing.date.uts).valueOf();
+                const timestamp = moment_1.default.unix(parseInt(now_playing.date.uts)).valueOf();
                 status_text = "⏹️ scrobbled " + (0, time_difference_1.default)(timestamp) + " ago";
             }
             const cover = (_b = now_playing.image) === null || _b === void 0 ? void 0 : _b.pop();
