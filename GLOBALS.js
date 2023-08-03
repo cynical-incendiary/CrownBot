@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Global constants used throughout the bot
 exports.default = {
-    VERSION: "11.1.0",
+    VERSION: "11.2.0",
     BUTTONS_VERSION: "001",
     MAX_USERS: 250,
     LASTFM_ENDPOINT: "https://ws.audioscrobbler.com/2.0/?",

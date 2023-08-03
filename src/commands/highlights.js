@@ -5,9 +5,10 @@ const discord_js_1 = require("discord.js");
 const DB_1 = tslib_1.__importDefault(require("../handlers/DB"));
 const User_1 = tslib_1.__importDefault(require("../handlers/LastFM_components/User"));
 const Spotify_1 = require("../handlers/Spotify");
+const axios_1 = tslib_1.__importDefault(require("axios"));
 const fs_1 = require("fs");
 const path_1 = tslib_1.__importDefault(require("path"));
-const axios_1 = tslib_1.__importDefault(require("axios"));
+const GLOBALS_1 = tslib_1.__importDefault(require("../../GLOBALS"));
 module.exports = {
     data: new discord_js_1.SlashCommandBuilder()
         .setName("highlights")
@@ -27,7 +28,6 @@ module.exports = {
         const topartists = query.data.topartists.artist;
         const spotify = new Spotify_1.Spotify();
         let ARTISTS; // send this to template
-        await interaction.editReply("Generating your highlights... this might take a while.");
         try {
             await spotify.attach_access_token().catch(() => {
                 throw "Failed authenticating.";
@@ -88,6 +88,7 @@ module.exports = {
             url: "https://crownbotutils.onrender.com/screencap",
             headers: { "Content-Type": "text/plain" },
             data: injected_html,
+            timeout: GLOBALS_1.default.GENERAL_TIMEOUT,
         };
         const data_res = (await axios_1.default.request(options).catch(console.error));
         if (data_res.status !== 200)
@@ -95,10 +96,6 @@ module.exports = {
         const img = Buffer.from(data_res.data);
         if (!img)
             return response.fail();
-        // const img_buffer: any = await nodeHtmlToImage({
-        //   html: injected_html,
-        //   selector: ".container",
-        // });
         const attachment = new discord_js_1.AttachmentBuilder(img, {
             name: "chart.png",
         });
