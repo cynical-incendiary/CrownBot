@@ -9,6 +9,11 @@ const CrownBot_1 = tslib_1.__importDefault(require("./src/handlers/CrownBot"));
 const handle_autocomplete_1 = tslib_1.__importDefault(require("./src/handlers/handle_autocomplete"));
 const handle_button_1 = require("./src/handlers/handle_button");
 const handle_modal_1 = require("./src/handlers/handle_modal");
+
+
+require('dotenv').config({
+	path: __dirname + "/.env"
+});
 /*
 # REQUIRED
 ======================================================================================================
@@ -30,6 +35,7 @@ LYRICS_ENDPOINT: Lyrics endpoint for the /lyrics command--command won't work unl
 SPOTIFY_CLIENTID: Spotify client ID for the /chart command to show artist images
 SPOTIFY_SECRETID: Spotify client ID for the /chart command to show artist images
 */
+
 (async () => {
     var _a;
     try {
@@ -99,6 +105,7 @@ SPOTIFY_SECRETID: Spotify client ID for the /chart command to show artist images
                 console.error(e);
             }
         });
+	console.log("here!");
         await client.login(DISCORD_TOKEN);
         console.log(`Logged in as ${(_a = client.user) === null || _a === void 0 ? void 0 : _a.tag}`);
     }
