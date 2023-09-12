@@ -14,5 +14,5 @@ class CacheHandler {
         this.collectors = new Collectors_1.Collectors();
     }
 }
-exports.default = CacheHandler;
 _CacheHandler_bot = new WeakMap();
+exports.default = CacheHandler;

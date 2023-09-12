@@ -1,5 +1,5 @@
 "use strict";
-var _CommandResponse_instances, _CommandResponse_reply_text, _CommandResponse_hook_custom_function, _CommandResponse_hook_retry_button;
+var _CommandResponse_instances, _a, _CommandResponse_reply_text, _CommandResponse_hook_custom_function, _CommandResponse_hook_retry_button;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommandResponse = void 0;
 const tslib_1 = require("tslib");
@@ -75,7 +75,7 @@ class CommandResponse {
         }
         if (this.follow_up.text || this.follow_up.embeds || this.follow_up.files) {
             const { text, embeds, embed_components, files, send_as_embed } = this.follow_up;
-            const follow_up_response = new CommandResponse(this.bot, this.client, this.interaction);
+            const follow_up_response = new _a(this.bot, this.client, this.interaction);
             follow_up_response.text = text;
             follow_up_response.embeds = embeds;
             follow_up_response.embed_components = embed_components;
@@ -86,8 +86,8 @@ class CommandResponse {
         }
     }
     async check_embed_perms() {
-        var _a;
-        const me = await ((_a = this.interaction.guild) === null || _a === void 0 ? void 0 : _a.members.fetchMe());
+        var _b;
+        const me = await ((_b = this.interaction.guild) === null || _b === void 0 ? void 0 : _b.members.fetchMe());
         let embed_permission = false;
         if (me) {
             const bot_permissions = (this.interaction.channel).permissionsFor(me);
@@ -114,9 +114,9 @@ class CommandResponse {
     }
 }
 exports.CommandResponse = CommandResponse;
-_CommandResponse_instances = new WeakSet(), _CommandResponse_reply_text = async function _CommandResponse_reply_text() {
-    var _a, _b, _c;
-    if (!this.text && !((_a = this.embeds) === null || _a === void 0 ? void 0 : _a.length) && !((_b = this.files) === null || _b === void 0 ? void 0 : _b.length))
+_a = CommandResponse, _CommandResponse_instances = new WeakSet(), _CommandResponse_reply_text = async function _CommandResponse_reply_text() {
+    var _b, _c, _d;
+    if (!this.text && !((_b = this.embeds) === null || _b === void 0 ? void 0 : _b.length) && !((_c = this.files) === null || _c === void 0 ? void 0 : _c.length))
         return;
     const has_embed_perms = await this.check_embed_perms();
     if (!has_embed_perms) {
@@ -178,7 +178,7 @@ _CommandResponse_instances = new WeakSet(), _CommandResponse_reply_text = async 
             plaintext = this.text;
         }
     }
-    if ((_c = this.embeds) === null || _c === void 0 ? void 0 : _c.length) {
+    if ((_d = this.embeds) === null || _d === void 0 ? void 0 : _d.length) {
         embeds.push(...this.embeds);
     }
     if (!this.interaction.deferred) {
@@ -251,11 +251,11 @@ _CommandResponse_instances = new WeakSet(), _CommandResponse_reply_text = async 
             if (!command)
                 return;
             try {
-                const response = new CommandResponse(this.bot, this.client, this.interaction);
+                const response = new _a(this.bot, this.client, this.interaction);
                 await new_interaction.deferUpdate();
                 const command_response = await (0, Command_1.preflight_checks)(this.bot, this.client, this.interaction, command, response);
                 if (typeof command_response == "object" &&
-                    command_response instanceof CommandResponse) {
+                    command_response instanceof _a) {
                     await command_response.reply();
                 }
             }

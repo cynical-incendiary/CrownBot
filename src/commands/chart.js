@@ -149,7 +149,9 @@ module.exports = {
     async generate_chart(data, config) {
         const { columns: x, rows: y } = config;
         const no_album_cover = "https://i.imgur.com/N5xps21.png";
-        (0, canvas_1.registerFont)("./src/fonts/Roboto-Regular.ttf", { family: "Roboto" });
+        (0, canvas_1.registerFont)(appRoot + "/fonts/Roboto-Regular.ttf", {
+            family: "Roboto",
+        });
         const font = "15px Roboto";
         let cached_noalbumcover;
         try {

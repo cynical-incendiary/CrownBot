@@ -212,5 +212,5 @@ class DB {
         return server_config;
     }
 }
-exports.default = DB;
 _DB_models = new WeakMap();
+exports.default = DB;

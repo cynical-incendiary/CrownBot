@@ -102,5 +102,5 @@ class CrownBot {
             return channel;
     }
 }
-exports.default = CrownBot;
 _CrownBot_token = new WeakMap();
+exports.default = CrownBot;
