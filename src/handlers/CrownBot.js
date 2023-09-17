@@ -96,8 +96,10 @@ class CrownBot {
         const clientId = this.client_id;
         for (const file of commandFiles) {
             const command = require(path_1.default.join(dir, file));
-            if (command.data)
+            if (command.data) {
+                this.commands.push(command);
                 commands.push(command.data.toJSON());
+            }
         }
         const rest = new discord_js_1.REST({ version: "10" }).setToken(tslib_1.__classPrivateFieldGet(this, _CrownBot_token, "f"));
         return (async () => {
