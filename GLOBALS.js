@@ -7,6 +7,7 @@ exports.default = {
     MAX_USERS: 250,
     LASTFM_ENDPOINT: "https://ws.audioscrobbler.com/2.0/?",
     SUPPORT_SERVER: "https://discord.gg/4vU6kGhejv",
+    SUPPORT_SERVER_ID: "1001517710917767188",
     GENERAL_TIMEOUT: 300000,
     PAGINATE_TIMEOUT: 300000,
     PAGINATE_ELEMENTS: 15,

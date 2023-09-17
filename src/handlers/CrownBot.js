@@ -9,6 +9,7 @@ const path_1 = tslib_1.__importDefault(require("path"));
 const DBModels_1 = require("../models/DBModels");
 const Cache_1 = tslib_1.__importDefault(require("./Cache"));
 const Logger_1 = tslib_1.__importDefault(require("./Logger"));
+const GLOBALS_1 = tslib_1.__importDefault(require("../../GLOBALS"));
 class CrownBot {
     constructor(options) {
         this.cache = new Cache_1.default(this);
@@ -35,6 +36,7 @@ class CrownBot {
     async init() {
         await this.load_db();
         await this.register_commands();
+        await this.register_owner_commands();
         await this.load_botconfig();
         await this.cache.config.init(); /* cache server configs for the session */
         if (!this.commands.length || !this.mongoose || !this.models)
@@ -74,6 +76,34 @@ class CrownBot {
             try {
                 console.log(`Started refreshing ${commands.length} application (/) commands.`);
                 await rest.put(discord_js_1.Routes.applicationCommands(clientId), {
+                    body: commands,
+                });
+            }
+            catch (error) {
+                console.error(error);
+            }
+        })();
+    }
+    /**
+     * Registers owner-only slash commands
+     */
+    async register_owner_commands() {
+        const commands = [];
+        const dir = path_1.default.join(__dirname, "../commands/owner_commands");
+        const commandFiles = fs_1.default
+            .readdirSync(dir)
+            .filter((file) => file.endsWith(".js"));
+        const clientId = this.client_id;
+        for (const file of commandFiles) {
+            const command = require(path_1.default.join(dir, file));
+            if (command.data)
+                commands.push(command.data.toJSON());
+        }
+        const rest = new discord_js_1.REST({ version: "10" }).setToken(tslib_1.__classPrivateFieldGet(this, _CrownBot_token, "f"));
+        return (async () => {
+            try {
+                console.log(`Started refreshing ${commands.length} owner-only (/) commands.`);
+                await rest.put(discord_js_1.Routes.applicationGuildCommands(clientId, GLOBALS_1.default.SUPPORT_SERVER_ID), {
                     body: commands,
                 });
             }
