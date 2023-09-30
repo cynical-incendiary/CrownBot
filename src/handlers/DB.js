@@ -134,6 +134,12 @@ class DB {
      */
     async log_whoplays(track_name, artist_name, leaderboard, guild_id) {
         const timestamp = moment_1.default.utc().valueOf();
+        const simplified_stat = leaderboard.map((elem) => {
+            return {
+                user_id: elem.user_id,
+                userplaycount: elem.userplaycount,
+            };
+        });
         return tslib_1.__classPrivateFieldGet(this, _DB_models, "f").whoplayslog.findOneAndUpdate({
             track_name,
             artist_name,
@@ -143,7 +149,7 @@ class DB {
             artist_name,
             guild_id,
             listener: leaderboard.length,
-            stat: leaderboard,
+            stat: simplified_stat,
             timestamp,
         }, {
             upsert: true,
