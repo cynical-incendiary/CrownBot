@@ -21,6 +21,7 @@ module.exports = {
         .setRequired(false)
         .setAutocomplete(true)),
     async execute(bot, client, interaction, response) {
+        var _a, _b;
         response.allow_retry = true;
         const db = new DB_1.default(bot.models);
         const user = await db.fetch_user(interaction.guild.id, interaction.user.id);
@@ -57,6 +58,10 @@ module.exports = {
             last_count = last_log.userplaycount;
             strs.time = (0, time_difference_1.default)(last_log.timestamp);
         }
+        const last_wk_log = await bot.models.whoknowslog.findOne({
+            artist_name: artist.name,
+            guild_id: interaction.guild.id,
+        });
         const count_diff = artist.stats.userplaycount - last_count;
         if (count_diff < 0) {
             strs.count = `:small_red_triangle_down: ${count_diff}`;
@@ -69,9 +74,43 @@ module.exports = {
             : "";
         const percentage = ((artist.stats.userplaycount / artist.stats.playcount) *
             100).toFixed(2);
-        const embed = new discord_js_1.EmbedBuilder()
-            .setTitle(`Artist plays`)
-            .setDescription(`**${(0, escapemarkdown_1.default)(artist.name)}** — **${artist.stats.userplaycount} play(s)** \n\n (**${percentage}%** of ${(0, number_abbreviate_1.default)(artist.stats.playcount, 1)} plays) \n\n ${aggr_str}`);
+        console.log(artist);
+        const thumb = (_a = artist.image.pop()) === null || _a === void 0 ? void 0 : _a["#text"];
+        const short_bio = (_b = artist.bio) === null || _b === void 0 ? void 0 : _b.summary.replace(/<a href.*<\/a>/g, ` (Source: [Last.fm](${artist.url}))`);
+        const text = `# ${(0, escapemarkdown_1.default)(artist.name)}\n## Bio\n${short_bio}\n## Stats\n`;
+        const embed = new discord_js_1.EmbedBuilder().setDescription(text);
+        console.log(last_wk_log);
+        const fields = [
+            {
+                name: "Global (Last.fm)",
+                value: `${(0, number_abbreviate_1.default)(artist.stats.playcount, 1)} plays (${(0, number_abbreviate_1.default)(artist.stats.listeners, 1)} listeners)`,
+                inline: true,
+            },
+        ];
+        if (last_wk_log) {
+            const aggr_plays = last_wk_log.stat.reduce((acc, cur) => acc + parseInt(cur.userplaycount), 0);
+            fields.push({
+                name: "This server",
+                value: `${aggr_plays} plays (${last_wk_log.stat.length} listeners)`,
+                inline: true,
+            });
+        }
+        fields.push({
+            name: `${interaction.user.username}'s playcount`,
+            value: `**${artist.stats.userplaycount} play(s)** — (**${percentage}%** of ${(0, number_abbreviate_1.default)(artist.stats.playcount, 1)} plays) \n ${aggr_str}`,
+            inline: false,
+        });
+        embed.addFields(fields);
+        if (thumb)
+            embed.setThumbnail(thumb);
+        // .setDescription(
+        //   `**${esm(artist.name)}** — **${
+        //     artist.stats.userplaycount
+        // } play(s)** \n\n (**${percentage}%** of ${abbreviate(
+        //   artist.stats.playcount,
+        //   1
+        // )} plays) \n\n ${aggr_str}`
+        // );
         await this.update_log(bot, interaction, artist);
         response.embeds = [embed];
         return response;
