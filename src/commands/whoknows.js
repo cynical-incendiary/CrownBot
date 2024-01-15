@@ -11,6 +11,7 @@ const escapemarkdown_1 = tslib_1.__importDefault(require("../misc/escapemarkdown
 const get_registered_users_1 = tslib_1.__importDefault(require("../misc/get_registered_users"));
 const parse_spotify_presence_1 = tslib_1.__importDefault(require("../misc/parse_spotify_presence"));
 const time_difference_1 = tslib_1.__importDefault(require("../misc/time_difference"));
+const axios_1 = tslib_1.__importDefault(require("axios"));
 module.exports = {
     data: new discord_js_1.SlashCommandBuilder()
         .setName("whoknows")
@@ -59,26 +60,27 @@ module.exports = {
         if (users.length > bot.max_users) {
             users.length = bot.max_users;
         }
-        const lastfm_requests = [];
-        for await (const user of users) {
-            const context = {
-                discord_user: user.discord,
+        const req_users = users.map((user) => {
+            return {
                 lastfm_username: user.database.username,
+                discord_username: user.discord.user.username,
+                discord_id: user.discord.user.id,
+                discord_tag: user.discord.user.tag,
             };
-            lastfm_requests.push(new Artist_1.default({
-                name: artist_name,
-                username: user.database.username,
-            })
-                .user_get_info()
-                .then((res) => {
-                const response_with_context = {
-                    wrapper: res,
-                    context,
-                };
-                return response_with_context;
-            }));
+        });
+        const req = await axios_1.default
+            .post(bot.wk_helper_endpoint, {
+            artist: artist.name,
+            users: JSON.stringify(req_users),
+        }, { timeout: 30 * 1000 })
+            .catch((e) => {
+            console.log(e);
+            return undefined;
+        });
+        if (!req || req.status !== 200 || !req.data) {
+            return response.error("lastfm_error");
         }
-        let responses = await Promise.all(lastfm_requests);
+        let responses = req.data;
         if (!responses.length ||
             responses.some((response) => { var _a, _b, _c; return !((_c = (_b = (_a = response === null || response === void 0 ? void 0 : response.wrapper.data) === null || _a === void 0 ? void 0 : _a.artist) === null || _b === void 0 ? void 0 : _b.stats) === null || _c === void 0 ? void 0 : _c.playcount); } // sanity check
             )) {
@@ -87,22 +89,19 @@ module.exports = {
         responses = responses.filter((response) => response.wrapper.success);
         let leaderboard = [];
         responses.forEach((response) => {
-            var _a;
             const artist = response.wrapper.data.artist;
             const context = response.context;
-            if (!context || !context.discord_user)
-                return;
             if (artist.stats.userplaycount === undefined)
                 return;
             if (artist.stats.userplaycount <= 0)
                 return;
             leaderboard.push({
                 artist_name: artist.name,
-                discord_username: (_a = context.discord_user) === null || _a === void 0 ? void 0 : _a.user.username,
+                discord_username: context.discord_username,
                 lastfm_username: context.lastfm_username,
                 userplaycount: artist.stats.userplaycount.toString(),
-                user_id: context.discord_user.user.id,
-                user_tag: context.discord_user.user.tag,
+                user_id: context.discord_id,
+                user_tag: context.discord_tag,
                 guild_id: interaction.guild.id,
             });
         });

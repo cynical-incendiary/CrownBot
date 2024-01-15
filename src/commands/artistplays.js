@@ -74,12 +74,10 @@ module.exports = {
             : "";
         const percentage = ((artist.stats.userplaycount / artist.stats.playcount) *
             100).toFixed(2);
-        console.log(artist);
         const thumb = (_a = artist.image.pop()) === null || _a === void 0 ? void 0 : _a["#text"];
         const short_bio = (_b = artist.bio) === null || _b === void 0 ? void 0 : _b.summary.replace(/<a href.*<\/a>/g, ` (Source: [Last.fm](${artist.url}))`);
         const text = `# ${(0, escapemarkdown_1.default)(artist.name)}\n## Bio\n${short_bio}\n## Stats\n`;
         const embed = new discord_js_1.EmbedBuilder().setDescription(text);
-        console.log(last_wk_log);
         const fields = [
             {
                 name: "Global (Last.fm)",
@@ -103,14 +101,6 @@ module.exports = {
         embed.addFields(fields);
         if (thumb)
             embed.setThumbnail(thumb);
-        // .setDescription(
-        //   `**${esm(artist.name)}** — **${
-        //     artist.stats.userplaycount
-        // } play(s)** \n\n (**${percentage}%** of ${abbreviate(
-        //   artist.stats.playcount,
-        //   1
-        // )} plays) \n\n ${aggr_str}`
-        // );
         await this.update_log(bot, interaction, artist);
         response.embeds = [embed];
         return response;

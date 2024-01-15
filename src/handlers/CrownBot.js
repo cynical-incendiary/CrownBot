@@ -25,6 +25,7 @@ class CrownBot {
         this.api_key = options.api_key;
         this.mongo = options.mongo;
         this.url = options.url;
+        this.wk_helper_endpoint = options.wk_helper_endpoint;
     }
     /**
      * - Connects to MongoDB.
