@@ -37,13 +37,12 @@ global.appRoot = path_1.default.resolve(__dirname);
 (async () => {
     var _a;
     try {
-        const { DISCORD_CLIENTID, DISCORD_TOKEN, OWNER_ID, LASTFM_API_KEY, MONGO, WK_HELPER_ENDPOINT, } = process.env;
+        const { DISCORD_CLIENTID, DISCORD_TOKEN, OWNER_ID, LASTFM_API_KEY, MONGO } = process.env;
         if (!(DISCORD_TOKEN &&
             OWNER_ID &&
             LASTFM_API_KEY &&
             MONGO &&
-            DISCORD_CLIENTID &&
-            WK_HELPER_ENDPOINT)) {
+            DISCORD_CLIENTID)) {
             throw "Some of the environment variables are missing.";
         }
         const bot = await new CrownBot_1.default({
@@ -56,7 +55,6 @@ global.appRoot = path_1.default.resolve(__dirname);
             api_key: LASTFM_API_KEY,
             mongo: MONGO,
             url: GLOBALS_1.default.LASTFM_ENDPOINT,
-            wk_helper_endpoint: WK_HELPER_ENDPOINT,
         }).init();
         const client = new discord_js_1.Client({
             intents: [discord_js_1.GatewayIntentBits.Guilds, discord_js_1.GatewayIntentBits.GuildPresences],
