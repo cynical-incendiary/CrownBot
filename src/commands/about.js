@@ -24,7 +24,7 @@ module.exports = {
         const row = (new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder()
             .setLabel("Invite to your server")
             .setStyle(discord_js_1.ButtonStyle.Link)
-            .setURL("https://discord.com/api/oauth2/authorize?client_id=636075999154536449&permissions=313344&scope=bot"), new discord_js_1.ButtonBuilder()
+            .setURL("https://discord.com/api/oauth2/authorize?client_id=1328304348991586354&permissions=313344&scope=bot"), new discord_js_1.ButtonBuilder()
             .setLabel("Join support server")
             .setStyle(discord_js_1.ButtonStyle.Link)
             .setURL(GLOBALS_1.default.SUPPORT_SERVER)));
@@ -38,7 +38,7 @@ module.exports = {
             { name: "Repository", value: "<https://github.com/d-shaun/CrownBot/>" },
             {
                 name: "Invite link",
-                value: "<https://discord.com/api/oauth2/authorize?client_id=636075999154536449&permissions=313344&scope=bot>",
+                value: "<https://discord.com/api/oauth2/authorize?client_id=1328304348991586354&permissions=313344&scope=bot>",
             },
             {
                 name: "Support server",
